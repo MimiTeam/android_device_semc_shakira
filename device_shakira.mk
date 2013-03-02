@@ -57,8 +57,9 @@ PRODUCT_COPY_FILES += \
 
 # Themes
 PRODUCT_COPY_FILES += \
-    device/semc/shakira/prebuilt/minicm.png:system/usr/res/minicm.png \
-	device/semc/shakira/prebuilt/bootanimation.zip:system/media/bootanimation.zip
+    device/semc/shakira/prebuilt/Seeder-2.0.0b1.apk:system/app/Seeder-2.0.0b1.apk \
+
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/system,system)
 
 # Touchsceen
 PRODUCT_COPY_FILES += \

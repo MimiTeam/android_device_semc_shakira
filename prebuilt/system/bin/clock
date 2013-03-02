@@ -1,0 +1,601 @@
+#!/system/bin/sh
+# Adrenaline CPU Control
+# Brought To You By ImbaWind@XDA Developers
+# Special Thanks To Ketut.Kumajaya !
+# Thanks all of those who have replied me and tried to asist me !
+ver=3.2
+version="BETA $ver"
+
+# Change-able Scipt Speed
+# 0 ~ 3 (Fastest ~ Slowest)
+speed=1
+sleep="sleep $speed"
+
+# Current Max Clock Speed
+cur_max_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+CUR_MAX=`cat $cur_max_file`
+
+# Current Min Clock Speed
+cur_min_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+CUR_MIN=`cat $cur_min_file`
+
+# Current Governor
+scal_gov_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+CUR_GOV=`cat $scal_gov_file`
+
+# Available Governor
+avail_gov_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
+AVAIL_GOV=`cat $avail_gov_file`
+
+# Available Frequencies
+avail_freq_file=/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+AVAIL_FREQ=`cat $avail_freq_file`
+
+
+# Tell Current Script Version
+echo " Cpu Scipt Version : $version "
+echo ""
+echo ""
+
+if [ -e /system/xbin/busybox ]; then
+	busybox mount -o remount,rw -t rootfs /
+elif [ -e /system/bin/busybox ]; then
+	busybox mount -o remount,rw -t rootfs /
+fi
+
+# Checking required files then tell currently cpu stat
+if [ -e /system/etc/gov/BETA3.2 ]; then
+	# Tell Current Cpu Stat
+	echo -e " You're Running From \033[1;32m $CUR_MIN to $CUR_MAX \033[0;36m Hz";
+	echo -e "Current Governor Is \033[1;32m $CUR_GOV \033[0;36m";
+	echo "";
+	echo "";
+	$sleep
+else
+	echo " Required Files NOT Exist !";
+	echo "";
+	$sleep
+	echo " Please flash CPU_FILES.zip in CWM first! ";
+	echo "";
+	$sleep
+	echo -n " Press Enter Key To Exit... ";
+		read enterKey
+		exit;
+fi
+	
+
+echo "               [ Options ] ";
+echo " 1. Change CPU Governor Profile ";
+echo " 2. Change Maximum Processor Frequency (b84 only) ";
+echo " 3. Change Minimum Processor Frequency (b84 only) ";
+echo " 4. Reboot ";
+echo " 5. Exit ";
+echo "";
+$sleep
+ echo -n " Please Enter Option [1 - 6] : ";
+ read opt
+ echo ""
+ $sleep
+case $opt in
+  1) echo " [Option 1] Change CPU Governor Profile "
+		echo ""
+		echo ""
+		echo -e " Current Governor: $CUR_GOV"
+		echo ""
+		$sleep
+		echo " Available Governors: "
+		echo "$AVAIL_GOV"
+		echo ""
+		$sleep
+		echo " Insert your desired governor "
+		echo -n " Your Governor: ";read GOV
+NEW_GOV_FILE=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
+NEW_GOV=$NEW_GOV_FILE
+		case $GOV in
+			"interactiveX") echo interactiveX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/interactiveX/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"interactive") echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/interactive/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"smartass") echo smartass > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/smartass/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"smartassV2") if [ -e /system/cfroot/release-84-S5830- ]; then 
+								echo smartassV2 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+						 else
+								echo "smartassV2 is only available in cf-root b84 !";
+								echo "";
+								$sleep
+								echo -n " Press Enter Key To Menu... ";
+								read enterKey
+								clear;
+								clock;
+						  fi
+								 busybox mount -o remount,rw -t rootfs /system 
+								rm -f /system/etc/init.cfroot.post_boot.sh;
+								cp /system/etc/gov/smartassV2/init.cfroot.post_boot.sh /system/etc;
+								$sleep
+								chmod 644 /system/etc/init.cfroot.post_boot.sh;
+								echo "";
+								echo " Complete ";
+								$sleep
+								echo ""; 
+								echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+								echo "";
+								echo -n " Press Enter Key To Menu... ";
+								read enterKey
+								clear;
+								clock;;
+			"performance") echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/performance/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"powersave") echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/powersave/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"userspace") echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/userspace/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"ondemand") echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/ondemand/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"conservative") echo conservative > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.cfroot.post_boot.sh;
+				cp /system/etc/gov/conservative/init.cfroot.post_boot.sh /system/etc;
+				$sleep
+				chmod 644 /system/etc/init.cfroot.post_boot.sh;
+				echo "";
+				echo " Complete ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Governor : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor` ";
+				echo "";
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			*) echo " Invalid Governor! ";
+				echo " Please Try Again! ";
+				echo -n " Press Enter Key To Continue... ";
+		read enterKey
+				clear;
+				clock;;
+		esac
+		echo "";
+		echo "";
+		$sleep
+		echo -e " Current Governor: $NEW_GOV";
+		echo "";
+		echo "";
+		$sleep
+		echo -n " Press Enter Key To Continue... ";
+		read enterKey
+		clear;
+		clock;;
+  2) if [ -e /system/cfroot/release-84-S5830- ]; then
+			echo " [Option 2] Change Maximum Processor Frequency ";
+	 else
+			echo " Option 2 is only available in cf-root b84 ! ";
+			echo "";
+			$sleep
+			echo -n " Press Enter Key To Menu... ";
+			read enterKey
+			clear;
+			clock;
+	 fi
+		echo "";
+		echo "";
+		$sleep
+		echo -e " Current Maximum Frequency: $CUR_MAX ";
+		echo "";
+		$sleep
+		echo " Available Frequency: ";
+		echo "$AVAIL_FREQ ";
+		echo "";
+		echo "";
+		$sleep
+		echo -n " Insert Your Frequency: ";read HFREQ;
+		case $HFREQ in
+			"245760") echo 245760 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/245760 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/245760;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"320000") echo 320000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/320000 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/320000;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"480000") echo 480000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/480000 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/480000;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"787200") echo 787200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/787200 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/787200;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"806400") echo 806400 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/806400 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/806400;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"825600") echo 825600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/825600 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/825600;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"844800") echo 844800 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/844800 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/844800;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"864000") echo 864000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/864000 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/864000;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"883200") echo 883200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/883200 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/883200;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			"902400") echo 902400 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq; 
+				 busybox mount -o remount,rw -t rootfs /system 
+				rm -f /system/etc/init.d/245760;
+				rm -f /system/etc/init.d/320000;
+				rm -f /system/etc/init.d/480000;
+				rm -f /system/etc/init.d/787200;
+				rm -f /system/etc/init.d/806400;
+				rm -f /system/etc/init.d/825600;
+				rm -f /system/etc/init.d/844800;
+				rm -f /system/etc/init.d/864000;
+				rm -f /system/etc/init.d/883200;
+				rm -f /system/etc/init.d/902400;
+				cp /system/etc/freq/902400 /system/etc/init.d;
+				$sleep
+				chmod 777 /system/etc/init.d/902400;
+				echo "";
+				echo " Changed Successfully ";
+ 				$sleep
+ 				echo ""; 
+				echo " Current Maximum CPU Frequency : `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq` ";
+ 				echo ""; 
+				echo -n " Press Enter Key To Menu... ";
+				read enterKey
+				clear;
+				clock;;
+			*) echo " Invalid Frequency! ";
+				echo " Please Try Again! ";
+				echo -n " Press Enter Key To Continue... ";
+		read enterKey
+				clear;
+				clock;;
+		esac;;
+  3) if [ -e /system/cfroot/release-84-S5830- ]; then
+			echo " [Option 3] Change Minimum Processor Frequency ";
+	 else
+			echo " Option 3 is only available in cf-root b84 ! ";
+			echo "";
+			$sleep
+			echo -n " Press Enter Key To Menu... ";
+			read enterKey
+			clear;
+			clock;
+	 fi
+		echo "";
+		$sleep
+		echo -e " Current Minimum CPU Frequency: $CUR_MIN ";
+		echo "";
+		$sleep
+		echo " Available Frequency: ";
+		echo "$AVAIL_FREQ ";
+		echo "";
+		echo "";
+		$sleep
+		echo -n " Insert Your Frequency: ";read LFREQ;
+		echo $LFREQ > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+		echo " Changed Successfully ";
+NEW_MIN_FILE=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq`
+NEW_MIN=$NEW_MIN_FILE
+		echo "";
+		echo "";
+		$sleep
+		echo -e " Current Processor Minimum Frequency: $NEW_MIN ";
+		echo "";
+		echo "";
+		$sleep
+		echo -n " Press Enter Key To Continue... ";
+		read enterKey
+		clear;
+		clock;;
+  4) echo " Rebooting... ";
+		$sleep
+		reboot;;
+  5) echo "Exit";
+		$sleep
+		exit;;
+  *) echo " Invalid Option "
+		echo ""
+		$sleep
+		echo " Please try again "
+		echo ""
+		$sleep
+		echo -n " Press Enter Key To Menu... ";
+		read enterKey
+		opt=0
+		clock
+		esac
