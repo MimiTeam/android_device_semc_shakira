@@ -2,6 +2,5 @@
 <permissions>
  <library name="com.sonyericsson.metadatacleanup.api" file="/system/framework/com.sonyericsson.metadatacleanup.jar"/>
  <library name="com.sonyericsson.metadatacleanup.api_4" file="/system/framework/com.sonyericsson.metadatacleanup.jar"/>
- <library name="com.sonyericsson.metadatacleanup.api_5" file="/system/framework/com.sonyericsson.metadatacleanup.jar"/>
 </permissions>
 

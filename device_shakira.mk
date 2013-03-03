@@ -65,8 +65,31 @@ PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebui
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/SuperSU,system)
 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/SmallGappsICS,system)
+
 # Touchsceen
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
     device/semc/msm7x27-common/prebuilt/cyttsp-spi.idc:system/usr/idc/cyttsp-spi.idc
+
+PRODUCT_PROPERTY_OVERRIDES := \
+    windowsmgr.max_events_per_sec=240 \
+    ro.kernel.android.checkjni=0 \
+    ro.kernel.checkjni=0 \
+    ro.max.fling_velocity=6000 \
+    ro.ril.hsxpa=2 \
+    ro.ril.gprsclass=10 \ 
+    ro.ril.hep=1 \
+    ro.ril.enable.dtm=1 \ 
+    ro.ril.hsdpa.category=10 \ 
+    ro.ril.enable.a53=1 \
+    ro.ril.enable.3g.prefix=1 \ 
+    ro.ril.htcmaskw1.bitmask=4294967295 \ 
+    ro.ril.htcmaskw1=14449 \
+    ro.ril.hsupa.category=5 \
+    net.tcp.buffersize.default=4096,87380,256960,4096, 16384,256960 \
+    net.tcp.buffersize.wifi=4096,87380,256960,4096,163 84,256960 \
+    net.tcp.buffersize.umts=4096,87380,256960,4096,163 84,256960 \
+    net.tcp.buffersize.gprs=4096,87380,256960,4096,163 84,256960 \
+    net.tcp.buffersize.edge=4096,87380,256960,4096,163 84,256960 
 
