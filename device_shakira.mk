@@ -67,6 +67,10 @@ PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebui
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/SmallGappsICS,system)
 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/XperiaHome,system)
+
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/XperiaApps,system)
+
 # Touchsceen
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
