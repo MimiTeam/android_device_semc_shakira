@@ -61,6 +61,10 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/system,system)
 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/WALKMAN,system)
+
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/semc/shakira/prebuilt/SuperSU,system)
+
 # Touchsceen
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
